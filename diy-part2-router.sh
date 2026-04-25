@@ -38,22 +38,6 @@ function config_package_add(){
     config_add $package
 }
 
-function drop_package(){
-    if [ "$1" != "golang" ];then
-        # feeds/base -> package
-        find package/ -follow -name $1 -not -path "package/custom/*" | xargs -rt rm -rf
-        find feeds/ -follow -name $1 -not -path "feeds/base/custom/*" | xargs -rt rm -rf
-    fi
-}
-function clean_packages(){
-    path=$1
-    dir=$(ls -l ${path} | awk '/^d/ {print $NF}')
-    for item in ${dir}
-        do
-            drop_package ${item}
-        done
-}
-
 # Add the default password for the 'root' user（Change the empty password to 'password'）
 sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.::0:99999:7:::/g' package/base-files/files/etc/shadow
 
@@ -131,22 +115,27 @@ config_package_add kmod-usb-serial-option
 config_package_add kmod-usb-net-rndis
 config_package_add kmod-usb-net-ipheth
 # 第三方软件包
-## golang
+
+## 替换 Golang
 rm -rf feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
-# 删除
+
+## MosDNS v5
 rm -rf feeds/packages/net/mosdns
-## 新增
-config_package_add luci-app-autoreboot
+rm -rf feeds/luci/applications/luci-app-mosdns
+rm -rf feeds/packages/net/v2ray-geodata
+
+# 克隆源码到 package 目录
+git clone --depth 1 https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
+git clone --depth 1 https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
+
+## 新增插件
 config_package_add luci-app-mosdns
 config_package_add mosdns
 config_package_add luci-i18n-mosdns-zh-cn
-## argon 主题
-config_package_add luci-theme-argon
-## homeproxy
 config_package_add luci-app-homeproxy
 config_package_add luci-i18n-homeproxy-zh-cn
-## 分区扩容。一键自动格式化分区、扩容、自动挂载插件，专为OPENWRT设计，简化OPENWRT在分区挂载上烦锁的操作
+config_package_add luci-app-autoreboot
 config_package_add luci-app-partexp
 
 # 镜像生成
