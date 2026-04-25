@@ -19,5 +19,5 @@ sed -i 's,noinitrd,noinitrd mitigations=off,g' target/linux/x86/image/grub-iso.c
 sed -i 's,noinitrd,noinitrd mitigations=off,g' target/linux/x86/image/grub-pc.cfg
 
 # 添加第三方插件源 (例如很有名的 kenzok8 仓库)
-echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >> feeds.conf.default
-echo 'src-git small https://github.com/kenzok8/small' >> feeds.conf.default
+# echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >> feeds.conf.default
+# echo 'src-git small https://github.com/kenzok8/small' >> feeds.conf.default
