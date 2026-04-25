@@ -136,16 +136,16 @@ rm -rf feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
 # 删除
 rm -rf feeds/packages/net/mosdns
-## argon 主题
-config_package_add luci-theme-argon
-## homeproxy
-config_package_add luci-app-homeproxy
-config_package_add luci-i18n-homeproxy-zh-cn
 ## 新增
 config_package_add luci-app-autoreboot
 config_package_add luci-app-mosdns
 config_package_add mosdns
 config_package_add luci-i18n-mosdns-zh-cn
+## argon 主题
+config_package_add luci-theme-argon
+## homeproxy
+config_package_add luci-app-homeproxy
+config_package_add luci-i18n-homeproxy-zh-cn
 ## 分区扩容。一键自动格式化分区、扩容、自动挂载插件，专为OPENWRT设计，简化OPENWRT在分区挂载上烦锁的操作
 config_package_add luci-app-partexp
 
