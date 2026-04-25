@@ -116,6 +116,9 @@ config_package_add luci-app-ttyd
 config_package_del luci-app-dockerman
 # kms
 config_package_add luci-app-vlmcsd
+# tun
+config_package_add kmod-tun
+config_package_add ip-full
 # usb 2.0 3.0 支持
 config_package_add kmod-usb2
 config_package_add kmod-usb3
