@@ -98,8 +98,6 @@ config_package_add luci-app-upnp
 config_package_add luci-app-ttyd
 # docker
 config_package_del luci-app-dockerman
-# kms
-config_package_add luci-app-vlmcsd
 # tun
 config_package_add kmod-tun
 config_package_add ip-full
