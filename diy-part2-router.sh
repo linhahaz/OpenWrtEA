@@ -115,8 +115,8 @@ config_package_add kmod-usb-net-ipheth
 # 第三方软件包
 
 ## 替换 Golang
-rm -rf feeds/packages/lang/golang
-git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
+# rm -rf feeds/packages/lang/golang
+# git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
 
 ## MosDNS v5
 ## rm -rf feeds/packages/net/mosdns
