@@ -118,6 +118,9 @@ config_package_add kmod-usb-net-ipheth
 # rm -rf feeds/packages/lang/golang
 # git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
 
+# OpenWrt-momo
+git clone https://github.com/nikkinikki-org/OpenWrt-momo.git package/OpenWrt-momo
+
 ## MosDNS v5
 ## rm -rf feeds/packages/net/mosdns
 ## rm -rf feeds/luci/applications/luci-app-mosdns
@@ -135,6 +138,9 @@ config_package_add luci-app-homeproxy
 config_package_add luci-i18n-homeproxy-zh-cn
 config_package_add luci-app-autoreboot
 config_package_add luci-app-partexp
+config_package_add momo
+config_package_add luci-app-momo
+config_package_add luci-i18n-momo-zh-cn
 
 # 镜像生成
 # 修改分区大小
