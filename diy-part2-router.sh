@@ -122,18 +122,18 @@ git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/l
 # git clone https://github.com/nikkinikki-org/OpenWrt-momo.git package/OpenWrt-momo
 
 ## MosDNS v5
-## rm -rf feeds/packages/net/mosdns
-## rm -rf feeds/luci/applications/luci-app-mosdns
-## rm -rf feeds/packages/net/v2ray-geodata
+rm -rf feeds/packages/net/mosdns
+rm -rf feeds/luci/applications/luci-app-mosdns
+rm -rf feeds/packages/net/v2ray-geodata
 
 # 克隆源码到 package 目录
-# git clone --depth 1 https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
-# git clone --depth 1 https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
+git clone --depth 1 https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
+git clone --depth 1 https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 
 ## 新增插件
-# config_package_add luci-app-mosdns
-# config_package_add mosdns
-# config_package_add luci-i18n-mosdns-zh-cn
+config_package_add luci-app-mosdns
+config_package_add mosdns
+config_package_add luci-i18n-mosdns-zh-cn
 config_package_add luci-app-homeproxy
 config_package_add luci-i18n-homeproxy-zh-cn
 config_package_add luci-app-autoreboot
