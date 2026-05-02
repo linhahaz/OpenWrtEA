@@ -70,12 +70,20 @@ config_package_del kmod-fb-cfb-fillrect
 config_package_del kmod-fb-cfb-imgblt
 config_package_del kmod-fb-sys-fops
 config_package_del kmod-fb-sys-ram
+config_package_del ipv6helper
+config_package_del odhcp6c
 # Other
 config_package_del luci-app-rclone_INCLUDE_rclone-webui
 config_package_del luci-app-rclone_INCLUDE_rclone-ng
 # 新增
 # Firmware
 config_package_add intel-microcode
+# KVM 专属驱动优化
+config_package_add kmod-virtio-console
+config_package_add kmod-virtio-balloon
+config_package_add kmod-virtio-rng
+config_package_add qemu-ga
+config_package_add irqbalance
 # luci
 config_package_add luci
 config_package_add default-settings-chn
@@ -96,8 +104,6 @@ config_package_add luci-app-upnp
 #config_package_add python3-pip
 # tty 终端
 config_package_add luci-app-ttyd
-# docker
-config_package_del luci-app-dockerman
 # tun
 config_package_add kmod-tun
 config_package_add ip-full
@@ -116,6 +122,19 @@ config_package_add kmod-usb-serial-option
 config_package_add kmod-usb-net-rndis
 config_package_add kmod-usb-net-ipheth
 # 第三方软件包
+
+## 替换原生 TurboACC 为 chenmozhijin 版本
+# 1. 删掉 ImmortalWrt 源码里自带的 turboacc 防止冲突
+rm -rf feeds/luci/applications/luci-app-turboacc
+rm -rf feeds/luci/modules/luci-compat
+
+# 2. 拉取 chenmozhijin 的最新代码（由于他的库包含多个组件，通常按以下方式拉取）
+curl -sSL https://raw.githubusercontent.com/chenmozhijin/turboacc/luci/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh --no-sfe
+
+# 3. 勾选相应的软件包
+config_package_add luci-app-turboacc
+# 保留原生的 offload 作为备用
+config_package_add kmod-nft-offload
 
 ## 替换 Golang
 rm -rf feeds/packages/lang/golang
@@ -141,10 +160,22 @@ config_package_add luci-i18n-mosdns-zh-cn
 # config_package_add luci-i18n-homeproxy-zh-cn
 config_package_add luci-app-autoreboot
 config_package_add luci-app-partexp
+config_package_add xray-core
 # config_package_add momo
 # config_package_add luci-app-momo
 # config_package_add luci-i18n-momo-zh-cn
+# 系统底层优化 (BBR + 时区 + 禁用IPv6)
+# 强制开启 BBR
+echo "net.core.default_qdisc=fq" >> package/base-files/files/etc/sysctl.conf
+echo "net.ipv4.tcp_congestion_control=bbr" >> package/base-files/files/etc/sysctl.conf
 
+# 彻底禁用 IPv6
+echo "net.ipv6.conf.all.disable_ipv6 = 1" >> package/base-files/files/etc/sysctl.conf
+echo "net.ipv6.conf.default.disable_ipv6 = 1" >> package/base-files/files/etc/sysctl.conf
+echo "net.ipv6.conf.lo.disable_ipv6 = 1" >> package/base-files/files/etc/sysctl.conf
+
+# 默认设置上海时区
+sed -i "s/'UTC'/'CST-8'\n\t\tset system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
 # 镜像生成
 # 修改分区大小
 sed -i "/CONFIG_TARGET_KERNEL_PARTSIZE/d" .config
