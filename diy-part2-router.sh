@@ -153,6 +153,10 @@ config_package_add luci-app-partexp
 # config_package_add momo
 # config_package_add luci-app-momo
 # config_package_add luci-i18n-momo-zh-cn
+config_package_add shadowsocksr-libev-ssr-check
+config_package_add shadowsocksr-libev-ssr-local
+config_package_add shadowsocksr-libev-ssr-redir
+config_package_add shadowsocksr-libev-ssr-server
 # 系统底层优化 (BBR + 时区 + 禁用IPv6)
 # 强制开启 BBR
 echo "net.core.default_qdisc=fq" >> package/base-files/files/etc/sysctl.conf
