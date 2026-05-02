@@ -101,6 +101,9 @@ config_package_del luci-app-dockerman
 # tun
 config_package_add kmod-tun
 config_package_add ip-full
+config_package_add kmod-nft-socket
+config_package_add kmod-nft-tproxy
+config_package_add kmod-nft-nat
 # usb 2.0 3.0 支持
 config_package_add kmod-usb2
 config_package_add kmod-usb3
