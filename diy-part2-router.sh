@@ -123,16 +123,6 @@ config_package_add kmod-usb-net-rndis
 config_package_add kmod-usb-net-ipheth
 # 第三方软件包
 
-## 替换原生 TurboACC 为 chenmozhijin 版本
-# 1. 删掉 ImmortalWrt 源码里自带的 turboacc 防止冲突
-rm -rf feeds/luci/applications/luci-app-turboacc
-rm -rf feeds/luci/modules/luci-compat
-
-# 2. 拉取 chenmozhijin 的最新代码（由于他的库包含多个组件，通常按以下方式拉取）
-curl -sSL https://raw.githubusercontent.com/chenmozhijin/turboacc/luci/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh --no-sfe
-
-# 3. 勾选相应的软件包
-config_package_add luci-app-turboacc
 # 保留原生的 offload 作为备用
 config_package_add kmod-nft-offload
 
