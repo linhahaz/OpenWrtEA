@@ -121,7 +121,11 @@ config_package_add kmod-usb-serial
 config_package_add kmod-usb-serial-option
 config_package_add kmod-usb-net-rndis
 config_package_add kmod-usb-net-ipheth
+
 # 第三方软件包
+rm -rf feeds/luci/applications/luci-app-ssr-plus
+rm -rf feeds/packages/net/{xray-core,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-libev,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tuic-client,v2ray-plugin,xray-plugin,shadow-tls}
+git clone --depth=1 https://github.com/fw876/helloworld.git package/helloworld
 
 # 保留原生的 offload 作为备用
 config_package_add kmod-nft-offload
@@ -150,13 +154,14 @@ config_package_add luci-app-homeproxy
 config_package_add luci-i18n-homeproxy-zh-cn
 config_package_add luci-app-autoreboot
 config_package_add luci-app-partexp
+config_package_add luci-app-ssr-plus
+config_package_add luci-i18n-ssr-plus-zh-cn
 # config_package_add momo
 # config_package_add luci-app-momo
 # config_package_add luci-i18n-momo-zh-cn
-config_package_add shadowsocksr-libev-ssr-check
-config_package_add shadowsocksr-libev-ssr-local
-config_package_add shadowsocksr-libev-ssr-redir
-config_package_add shadowsocksr-libev-ssr-server
+config_package_add luci-app-ssr-plus_INCLUDE_ShadowsocksR_Libev_Client
+config_package_add luci-app-ssr-plus_INCLUDE_Xray
+config_package_add luci-app-ssr-plus_INCLUDE_Trojan
 # 系统底层优化 (BBR + 时区 + 禁用IPv6)
 # 强制开启 BBR
 echo "net.core.default_qdisc=fq" >> package/base-files/files/etc/sysctl.conf
