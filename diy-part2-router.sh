@@ -177,6 +177,12 @@ echo "net.ipv6.conf.lo.disable_ipv6 = 1" >> package/base-files/files/etc/sysctl.
 
 # 默认设置上海时区
 sed -i "s/'UTC'/'CST-8'\n\t\tset system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
+# 调整最大连接数为 262144
+sed -i '/customized in this file/a net.netfilter.nf_conntrack_max=262144' package/base-files/files/etc/sysctl.conf
+# 彻底关闭内核调试符号 (加快编译速度，减小固件体积)
+sed -i 's/CONFIG_DEBUG_INFO=y/# CONFIG_DEBUG_INFO is not set/g' .config
+sed -i 's/CONFIG_DEBUG_KERNEL=y/# CONFIG_DEBUG_KERNEL is not set/g' .config
+
 # 镜像生成
 # 修改分区大小
 sed -i "/CONFIG_TARGET_KERNEL_PARTSIZE/d" .config
