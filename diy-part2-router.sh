@@ -84,6 +84,9 @@ config_package_add kmod-virtio-balloon
 config_package_add kmod-virtio-rng
 config_package_add qemu-ga
 config_package_add irqbalance
+# 强制编译 AES-NI 硬件加速指令集支持
+config_package_add kmod-crypto-hw-aesni
+config_package_add kmod-crypto-hw-padlock
 # luci
 config_package_add luci
 config_package_add default-settings-chn
