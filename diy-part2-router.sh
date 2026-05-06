@@ -153,8 +153,8 @@ git clone --depth 1 https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 config_package_add luci-app-mosdns
 config_package_add mosdns
 config_package_add luci-i18n-mosdns-zh-cn
-config_package_add luci-app-homeproxy
-config_package_add luci-i18n-homeproxy-zh-cn
+## config_package_add luci-app-homeproxy
+## config_package_add luci-i18n-homeproxy-zh-cn
 config_package_add luci-app-autoreboot
 config_package_add luci-app-partexp
 config_package_add luci-app-ssr-plus
