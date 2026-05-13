@@ -11,10 +11,10 @@
 #
 
 # 使用 O2 级别的优化
-# sed -i 's,Os,O2 -march=x86-64-v2,g' include/target.mk
+sed -i 's,Os,O2 -march=x86-64-v2,g' include/target.mk
 
 # 替换原来的 O2 优化代码：
-sed -i 's,Os,O2 -march=x86-64-v3,g' include/target.mk
+# sed -i 's,Os,O2 -march=x86-64-v3,g' include/target.mk
 
 # 关闭 Spectre & Meltdown 补丁
 # sed -i 's,noinitrd,noinitrd mitigations=off,g' target/linux/x86/image/grub-efi.cfg
