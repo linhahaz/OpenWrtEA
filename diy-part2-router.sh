@@ -51,7 +51,8 @@ sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/M
 # Firmware
 #config_package_del i915-firmware-dmc
 # Sound Support
-config_package_del kmod-sound-core
+config_package_add kmod-sound-core
+config_package_add kmod-sched-cake
 # Video Support
 config_package_del kmod-acpi-video
 config_package_del kmod-backlight
@@ -84,7 +85,6 @@ config_package_add kmod-virtio-balloon
 config_package_add kmod-virtio-rng
 config_package_add qemu-ga
 config_package_add irqbalance
-config_package_add kmod-sched-cake
 # 强制编译 AES-NI 硬件加速指令集支持
 config_package_add kmod-crypto-hw-aesni
 config_package_add kmod-crypto-hw-padlock
