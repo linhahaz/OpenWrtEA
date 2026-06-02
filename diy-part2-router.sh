@@ -156,15 +156,10 @@ config_package_add luci-i18n-mosdns-zh-cn
 ## config_package_add luci-app-homeproxy
 ## config_package_add luci-i18n-homeproxy-zh-cn
 config_package_add luci-app-autoreboot
-config_package_add luci-app-partexp
 config_package_add luci-app-ssr-plus
 config_package_add luci-i18n-ssr-plus-zh-cn
-# config_package_add momo
-# config_package_add luci-app-momo
-# config_package_add luci-i18n-momo-zh-cn
 config_package_add luci-app-ssr-plus_INCLUDE_ShadowsocksR_Libev_Client
 config_package_add luci-app-ssr-plus_INCLUDE_Xray
-config_package_add luci-app-ssr-plus_INCLUDE_Trojan
 # 系统底层优化 (BBR + 时区 + 禁用IPv6)
 # 强制开启 BBR
 echo "net.core.default_qdisc=fq" >> package/base-files/files/etc/sysctl.conf
