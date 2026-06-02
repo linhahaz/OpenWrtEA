@@ -163,7 +163,7 @@ config_package_add luci-app-ssr-plus_INCLUDE_ShadowsocksR_Libev_Client
 config_package_add luci-app-ssr-plus_INCLUDE_Xray
 # 系统底层优化 (BBR + 时区 + 禁用IPv6)
 # 强制开启 BBR
-echo "net.core.default_qdisc=fq" >> package/base-files/files/etc/sysctl.conf
+echo "net.core.default_qdisc=cake" >> package/base-files/files/etc/sysctl.conf
 echo "net.ipv4.tcp_congestion_control=bbr" >> package/base-files/files/etc/sysctl.conf
 
 # 彻底禁用 IPv6
