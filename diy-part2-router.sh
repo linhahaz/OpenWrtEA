@@ -38,30 +38,14 @@ function config_package_add(){
     config_add $package
 }
 
-function drop_package(){
-    if [ "$1" != "golang" ];then
-        # feeds/base -> package
-        find package/ -follow -name $1 -not -path "package/custom/*" | xargs -rt rm -rf
-        find feeds/ -follow -name $1 -not -path "feeds/base/custom/*" | xargs -rt rm -rf
-    fi
-}
-function clean_packages(){
-    path=$1
-    dir=$(ls -l ${path} | awk '/^d/ {print $NF}')
-    for item in ${dir}
-        do
-            drop_package ${item}
-        done
-}
-
-# Add the default password for the 'root' user（Change the empty password to 'password'）
-sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.::0:99999:7:::/g' package/base-files/files/etc/shadow
+# 取消默认密码（恢复空密码直接登录）
+# sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.::0:99999:7:::/g' package/base-files/files/etc/shadow
 
 # Modify default IP
-sed -i 's/192.168.1.1/192.168.3.1/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.5.1/g' package/base-files/files/bin/config_generate
 
 # Modify default theme
-sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile
+# sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile
 
 # 删除
 # Firmware
@@ -93,6 +77,15 @@ config_package_del luci-app-rclone_INCLUDE_rclone-ng
 # 新增
 # Firmware
 config_package_add intel-microcode
+# KVM 专属驱动优化
+config_package_add kmod-virtio-console
+config_package_add kmod-virtio-balloon
+config_package_add kmod-virtio-rng
+config_package_add qemu-ga
+config_package_add irqbalance
+# 强制编译 AES-NI 硬件加速指令集支持
+config_package_add kmod-crypto-hw-aesni
+config_package_add kmod-crypto-hw-padlock
 # luci
 config_package_add luci
 config_package_add default-settings-chn
@@ -116,9 +109,9 @@ config_package_add luci-app-upnp
 # tty 终端
 config_package_add luci-app-ttyd
 # docker
-config_package_add luci-app-dockerman
+# config_package_add luci-app-dockerman
 # kms
-config_package_add luci-app-vlmcsd
+# config_package_add luci-app-vlmcsd
 # usb 2.0 3.0 支持
 config_package_add kmod-usb2
 config_package_add kmod-usb3
@@ -130,35 +123,11 @@ config_package_add kmod-usb-serial
 config_package_add kmod-usb-serial-option
 config_package_add kmod-usb-net-rndis
 config_package_add kmod-usb-net-ipheth
-
-# 第三方软件包
-mkdir -p package/custom
-git clone -b openwrt-25.12 --single-branch --depth 1 https://github.com/217heidai/OpenWrt-Packages.git package/custom
-clean_packages package/custom
-## golang
-rm -rf feeds/packages/lang/golang
-mv package/custom/golang feeds/packages/lang/
 ## argon 主题
-config_package_add luci-theme-argon
-## passwall
-config_package_add luci-app-passwall
-config_package_del luci-app-passwall_Iptables_Transparent_Proxy
-config_package_add luci-app-passwall_Nftables_Transparent_Proxy
-config_package_add luci-app-passwall_INCLUDE_Geoview
-config_package_del luci-app-passwall_INCLUDE_Haproxy
-config_package_del luci-app-passwall_INCLUDE_Hysteria
-config_package_del luci-app-passwall_INCLUDE_NaiveProxy
-config_package_del luci-app-passwall_INCLUDE_Shadowsocks_Rust_Client
-config_package_del luci-app-passwall_INCLUDE_Shadowsocks_Rust_Server
-config_package_del luci-app-passwall_INCLUDE_ShadowsocksR_Libev_Client
-config_package_del luci-app-passwall_INCLUDE_ShadowsocksR_Libev_Server
-config_package_del luci-app-passwall_INCLUDE_Shadow_TLS
-config_package_del luci-app-passwall_INCLUDE_Simple_Obfs
-config_package_del luci-app-passwall_INCLUDE_SingBox
-config_package_del luci-app-passwall_INCLUDE_V2ray_Geodata
-config_package_del luci-app-passwall_INCLUDE_V2ray_Plugin
-config_package_add luci-app-passwall_INCLUDE_Xray
-config_package_del luci-app-passwall_INCLUDE_Xray_Plugin
+## config_package_add luci-theme-argon
+## 新增插件
+config_package_add luci-app-homeproxy
+config_package_add luci-i18n-homeproxy-zh-cn
 ## 定时任务。重启、关机、重启网络、释放内存、系统清理、网络共享、关闭网络、自动检测断网重连、MWAN3负载均衡检测重连、自定义脚本等10多个功能
 #config_package_add luci-app-taskplan
 #config_package_add luci-lib-ipkg
@@ -168,17 +137,35 @@ config_package_add luci-app-partexp
 ## iStore 应用市场
 #config_package_add luci-app-store
 ## qmodem 4G/5G 支持
-config_package_add luci-app-qmodem-next
+## config_package_add luci-app-qmodem-next
 ## luci-app-easytier
-config_package_add luci-app-easytier
-config_package_add easytier
+## config_package_add luci-app-easytier
+## config_package_add easytier
+
+# 系统底层优化 (BBR + 时区 + 禁用IPv6)
+# 强制开启 bbr
+echo "net.core.default_qdisc = fq" >> package/base-files/files/etc/sysctl.conf
+echo "net.ipv4.tcp_congestion_control = bbr" >> package/base-files/files/etc/sysctl.conf
+
+# 彻底禁用 IPv6
+echo "net.ipv6.conf.all.disable_ipv6 = 1" >> package/base-files/files/etc/sysctl.conf
+echo "net.ipv6.conf.default.disable_ipv6 = 1" >> package/base-files/files/etc/sysctl.conf
+echo "net.ipv6.conf.lo.disable_ipv6 = 1" >> package/base-files/files/etc/sysctl.conf
+
+# 默认设置上海时区
+sed -i "s/'UTC'/'CST-8'\n\t\tset system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
+# 调整最大连接数为 262144
+sed -i '/customized in this file/a net.netfilter.nf_conntrack_max=262144' package/base-files/files/etc/sysctl.conf
+# 彻底关闭内核调试符号 (加快编译速度，减小固件体积)
+sed -i 's/CONFIG_DEBUG_INFO=y/# CONFIG_DEBUG_INFO is not set/g' .config
+sed -i 's/CONFIG_DEBUG_KERNEL=y/# CONFIG_DEBUG_KERNEL is not set/g' .config
 
 # 镜像生成
 # 修改分区大小
 sed -i "/CONFIG_TARGET_KERNEL_PARTSIZE/d" .config
 echo "CONFIG_TARGET_KERNEL_PARTSIZE=32" >> .config
 sed -i "/CONFIG_TARGET_ROOTFS_PARTSIZE/d" .config
-echo "CONFIG_TARGET_ROOTFS_PARTSIZE=2048" >> .config
+echo "CONFIG_TARGET_ROOTFS_PARTSIZE=1024" >> .config
 # 调整 GRUB_TIMEOUT
 sed -i "s/CONFIG_GRUB_TIMEOUT=\"3\"/CONFIG_GRUB_TIMEOUT=\"1\"/" .config
 ## 不生成 EXT4 硬盘格式镜像
